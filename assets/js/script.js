@@ -1,12 +1,11 @@
+//get_limited_data() Fonksiyonu başlangıç ekranında ki 6 adet verinin yazılmasını sağlıyor.
 function get_limited_data(){
     fetch("https://api.ratesapi.io/api/latest?base=TRY&symbols=USD,EUR,JPY,GBP,DKK,NOK")
     .then(response=>response.json())
     .then(data=>{
-        const rates_array=[];
-        console.log(rates_array);
         for(let a in data.rates){
             const TRY =1;
-            const toplam= Number(TRY/data.rates[a]).toFixed(3);
+            const type_of_tl= Number(TRY/data.rates[a]).toFixed(3); //Bu işlem sayesinde gelen datayı TL cinsine çeviriyorum.
             cards.innerHTML+=`
             <div class="card-area mt-4">
                 <div class="card-info">
@@ -21,11 +20,11 @@ function get_limited_data(){
                 <div class="card-exchange-area" id="card_exchange_area">
                 <div class="buying">
                     <h2 class="sales-title" id="buying_title">ALIŞ</h2>
-                    <p class="sales-amouth" id="buying_amouth">${toplam}</p>
+                    <p class="sales-amouth" id="buying_amouth">${type_of_tl}</p>
                 </div>
                 <div class="sales">
                     <h2 class="sales-title">SATIŞ</h2>
-                    <p class="sales-amouth" id="sales_amouth">${toplam}</p>
+                    <p class="sales-amouth" id="sales_amouth">${type_of_tl}</p>
                 </div>
                 </div>
             </div>`
@@ -36,23 +35,14 @@ function get_limited_data(){
 get_limited_data()
 
 
-
+// get_all_data() fonksiyonu tüm piyasaları alt alta listeletmek için kullanılıyor. Yukarıda ki fonksiyonla neredeyse aynı işlemleri içeriyor.
 function get_all_data(){
     fetch("https://api.ratesapi.io/api/latest?base=TRY")
     .then(response=>response.json())
     .then(data=>{
-        const full_data=[];
-        for(let b in data.rates){
-            full_data.push(data.rates[b]);
-        }
-        const TRY=data.rates.TRY
-        for (let i = 0; i< full_data.length; i++) {
-            full_data[i]=TRY/full_data[i];
-        }
-
         for(let a in data.rates){
             const TRY =1;
-            const toplam= Number(TRY/data.rates[a]).toFixed(3);
+            const type_of_tl= Number(TRY/data.rates[a]).toFixed(3);
             cards.innerHTML+=`
             <div class="card-area mt-4">
                 <div class="card-info">
@@ -67,11 +57,11 @@ function get_all_data(){
                 <div class="card-exchange-area">
                     <div class="buying">
                         <h2 class="sales-title" id="buying_title">ALIŞ</h2>
-                        <p class="sales-amouth" id="buying_amouth">${toplam}</p>
+                        <p class="sales-amouth" id="buying_amouth">${type_of_tl}</p>
                     </div>
                     <div class="sales">
                         <h2 class="sales-title">SATIŞ</h2>
-                        <p class="sales-amouth" id="sales_amouth">${toplam}</p>
+                        <p class="sales-amouth" id="sales_amouth">${type_of_tl}</p>
                     </div>
                 </div>
             </div>`
@@ -80,7 +70,7 @@ function get_all_data(){
     .catch(err=>console.warn(err)); 
 }
 
-
+//calculate() fonksiyonu döviz çevirme işlemi için kullanılıyor. Selectbox ögesinin içerisini fonksiyon ile dinamik getirtebilsem de selectbox içerisini seçme işlemini yapamadım o yüzden elle girdim.
 let first_input = document.getElementById("first_input");
 let second_input = document.getElementById("second_input");
 let selectbox = document.getElementById("selectbox");
